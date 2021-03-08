@@ -21,3 +21,11 @@ User.create(
     ]
   )
 end
+
+Follow.create(
+  [
+    { follower_id: 1, following_id: 2 },
+    { follower_id: 1, following_id: 3 },
+    { follower_id: 2, following_id: 3 }
+  ]
+)
