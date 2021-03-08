@@ -14,7 +14,7 @@ RSpec.describe 'FollowingSleeps' do
 
     before { user.following_users << following_user }
 
-    it 'returns a list of the sleep of following users' do
+    it 'returns a list of the sleep of following users by duration in desc' do
       get "/api/v1/users/#{user.id}/following_sleeps"
 
       expect(response.parsed_body).to eq(
@@ -32,6 +32,31 @@ RSpec.describe 'FollowingSleeps' do
             'start_at' => short_sleep.start_at.as_json,
             'end_at' => short_sleep.end_at.as_json,
             'duration' => 5.hours.to_i,
+            'user_id' => following_user.id,
+            'user_name' => following_user.name
+          }
+        ]
+      )
+    end
+
+    it 'returns a list of sleeps of following users by duration in asc' do
+      get "/api/v1/users/#{user.id}/following_sleeps?order=asc"
+
+      expect(response.parsed_body).to eq(
+        [
+          {
+            'id' => short_sleep.id, 
+            'start_at' => short_sleep.start_at.as_json,
+            'end_at' => short_sleep.end_at.as_json,
+            'duration' => 5.hours.to_i,
+            'user_id' => following_user.id,
+            'user_name' => following_user.name
+          },
+          {
+            'id' => long_sleep.id,
+            'start_at' => long_sleep.start_at.as_json,
+            'end_at' => long_sleep.end_at.as_json,
+            'duration' => 8.hours.to_i,
             'user_id' => following_user.id,
             'user_name' => following_user.name
           }

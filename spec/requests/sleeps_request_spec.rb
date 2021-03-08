@@ -10,14 +10,21 @@ RSpec.describe "Sleeps", type: :request do
   end
 
   describe 'GET /api/v1/users/:user_id/sleeps' do
-    let!(:sleep1) { create(:sleep, :recorded, user: user, created_at: Time.now.yesterday) }
-    let!(:sleep2) { create(:sleep, :recorded, user: user, created_at: Time.now) }
+    let!(:sleep1) { create(:sleep, user: user, start_at: Time.now.yesterday, end_at: Time.now) }
+    let!(:sleep2) { create(:sleep, user: user, start_at: Time.now, end_at: Time.now + 8.hours) }
 
-    it 'returns all sleep orderd by created_at in desc' do
+    it 'returns all sleep orderd by start_at in desc' do
       get "/api/v1/users/#{user.id}/sleeps"
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to match(/#{sleep2.to_json}.+#{sleep1.to_json}/)
+    end
+
+    it 'returns all sleep orderd by start_at in asc' do
+      get "/api/v1/users/#{user.id}/sleeps?order=asc"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/#{sleep1.to_json}.+#{sleep2.to_json}/)
     end
   end
 
