@@ -2,10 +2,11 @@ module Api
   module V1
     class SleepsController < ApiController
       before_action :set_sleep, only: :update
+      before_action :set_order_direction, only: :index
 
       def index
         @sleeps = Sleep.where(user: current_user)
-                       .order(start_at: :desc)
+                       .order(start_at: params[:order])
                        .page(params[:page])
         render json: @sleeps, status: :ok
       end
