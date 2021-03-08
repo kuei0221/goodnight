@@ -5,6 +5,8 @@ class Sleep < ApplicationRecord
 
   before_save :count_duration
 
+  delegate :name, to: :user, prefix: true
+
   private
 
   def count_duration
