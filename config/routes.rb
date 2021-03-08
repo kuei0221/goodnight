@@ -4,7 +4,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: :show do
         resources :sleeps, only: %i[index create update]
+        resources :followings, only: :index
       end
+
+      resources :followings, only: %i[create destroy]
     end
   end
 end
