@@ -1,0 +1,21 @@
+language: ruby
+
+env:
+  - "RAILS_ENV=test"
+
+rvm:
+  - 2.7.0
+
+before_install:
+  - gem install bundler
+
+install:
+  - bundle install
+  - nvm install node
+  - npm i -g yarn
+  - yarn
+  
+script:
+ - bundle exec rake db:create
+ - bundle exec rake db:migrate
+ - bundle exec rspec
