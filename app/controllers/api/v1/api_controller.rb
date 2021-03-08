@@ -12,6 +12,10 @@ module Api
       def current_user
         @current_user ||= User.find(params[:user_id])
       end
+
+      def set_order_direction
+        params[:order] = 'desc' unless %w[asc desc].include?(params[:order])
+      end
     end
   end
 end
