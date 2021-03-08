@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :users, only: :show do
         resources :sleeps, only: %i[index create update]
         resources :followings, only: :index
+        resources :following_sleeps, only: :index
       end
 
       resources :followings, only: %i[create destroy]
