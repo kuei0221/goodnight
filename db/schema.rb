@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_073025) do
+ActiveRecord::Schema.define(version: 2021_03_04_073656) do
+
+  create_table "sleeps", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_sleeps_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -18,4 +27,5 @@ ActiveRecord::Schema.define(version: 2021_03_04_073025) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "sleeps", "users"
 end
