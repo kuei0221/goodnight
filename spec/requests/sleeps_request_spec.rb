@@ -50,6 +50,16 @@ RSpec.describe "Sleeps", type: :request do
         expect(sleep).to be_blank
       end
     end
+
+    context 'when another sleep on going' do
+      let!(:on_going_sleep) { create(:sleep, user: user, start_at: Time.now) }
+      it 'returns bad request' do
+        post "/api/v1/users/#{user.id}/sleeps"
+
+        expect(response).to have_http_status(:bad_request)
+        expect(response.body).to match(/End the current sleep to start new one/)
+      end
+    end
   end
 
   describe 'PATCH /api/v1/users/:user_id/sleeps/:id' do
