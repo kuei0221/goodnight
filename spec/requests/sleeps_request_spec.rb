@@ -56,7 +56,7 @@ RSpec.describe "Sleeps", type: :request do
       it 'returns bad request' do
         post "/api/v1/users/#{user.id}/sleeps"
 
-        expect(response).to have_http_status(:bad_request)
+        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to match(/End the current sleep to start new one/)
       end
     end
@@ -84,6 +84,16 @@ RSpec.describe "Sleeps", type: :request do
 
           expect(response).to have_http_status(:unprocessable_entity)
           expect(sleep.reload).to have_attributes(end_at: nil)
+        end
+      end
+
+      context 'when updating ended sleep' do
+        before { sleep.update(end_at: end_at) }
+        it 'returns unprocessable_entity with messages' do
+          patch "/api/v1/users/#{user.id}/sleeps/#{sleep.id}"
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.body).to match(/Sleep is already ended, do not overwrite it/)
         end
       end
     end
