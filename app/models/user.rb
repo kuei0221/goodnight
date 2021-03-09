@@ -6,6 +6,6 @@ class User < ApplicationRecord
   has_many :following_users, through: :followings, source: :following
 
   def sleeping?
-    sleeps.any? && !sleeps.last.end_at
+    sleeps.last&.ongoing?
   end
 end

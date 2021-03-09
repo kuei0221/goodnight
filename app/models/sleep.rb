@@ -8,6 +8,10 @@ class Sleep < ApplicationRecord
 
   delegate :name, to: :user, prefix: true
 
+  def ongoing?
+    !end_at
+  end
+
   private
 
   def count_duration
